@@ -26,10 +26,10 @@ public class Users {
     private String userName;
     private String address;
     private String phoneNumber;
+    @Column(unique = true)
     private String email;
     private String password;
     private String cin;
-
 
     @Enumerated(EnumType.STRING)
     private Role role;
