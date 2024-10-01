@@ -19,6 +19,9 @@ public class CarsImages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
+    private String imageName;
+    private String imageType;
     @Lob
-    private byte[] image;
+    @Column(columnDefinition = "mediumblob")
+    private byte[] imageData;
 }
