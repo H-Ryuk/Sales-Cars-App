@@ -33,8 +33,8 @@ public class Cars {
     private String yearOfManufacture;
 
 
-    @ManyToMany(mappedBy = "carsList")
-    private List<Invoices> invoicesList = new ArrayList<>();
+//    @ManyToMany(mappedBy = "carsList")
+//    private List<Invoices> invoicesList = new ArrayList<>();
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

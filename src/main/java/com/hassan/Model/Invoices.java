@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Invoices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long invoiceId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
-    private Date invoiceDate;
+    private LocalDate invoiceDate;
     private BigDecimal subTotal;
     private BigDecimal taxAmount;
     private BigDecimal discountAmount;
@@ -50,4 +51,32 @@ public class Invoices {
             inverseJoinColumns = @JoinColumn(name = "car_fk")
     )
     private List<Cars> carsList = new ArrayList<>();
+
+
+    public Invoices(
+            LocalDate invoiceDate,
+            BigDecimal subTotal,
+            BigDecimal taxAmount,
+            BigDecimal discountAmount,
+            BigDecimal totalAmount,
+            Status paymentStatus,
+            Payment paymentMethod,
+            Users user,
+            List<Cars> carsList) {
+        this.invoiceDate = invoiceDate;
+        this.subTotal = subTotal;
+        this.taxAmount = taxAmount;
+        this.discountAmount = discountAmount;
+        this.totalAmount = totalAmount;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.user = user;
+        this.carsList = carsList;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        this.invoiceDate = LocalDate.now();
+    }
+
 }
