@@ -5,8 +5,8 @@ import com.hassan.Enumeration.Status;
 import com.hassan.Model.Cars;
 import com.hassan.Model.Invoices;
 import com.hassan.Model.Users;
+import com.hassan.Record.UserInvoiceCar;
 import com.hassan.Repo.InvoicesRepo;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -53,7 +53,7 @@ public class InvoicesService {
                         totalAmount, // total amount
                         Status.PAID, // invoice's payment status
                         Payment.CASH, // invoice's payment method
-                        user, // user (seller)
+                        user, // user (buyer)
                         cars // list of cars
                 );
 
@@ -62,6 +62,11 @@ public class InvoicesService {
         invoicesRepo.saveAll(invoicesList);
     }
 
+
+
+    public List<UserInvoiceCar> getInvoiceById(Long invoiceId) {
+        return invoicesRepo.getCars(invoiceId);
+    }
 
 
 

@@ -35,7 +35,14 @@ public class Users {
     private Role role;
 
 
+
+
     @OneToMany(mappedBy = "user")
     private List<Invoices> invoicesList = new ArrayList<>();
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "seller")
+    private List<Cars> carsList = new ArrayList<>();
 
 }

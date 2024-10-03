@@ -43,6 +43,7 @@ public class Invoices {
 
 
     @ManyToOne
+    @JoinColumn(name = "buyer")
     private Users user;
 
     @ManyToMany
