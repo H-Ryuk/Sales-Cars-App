@@ -4,6 +4,7 @@ package com.hassan.Service;
 import com.hassan.Model.Users;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Repo.UsersRepo;
+import com.hassan.Security.Encryption.BCryptConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,13 @@ import java.util.List;
 public class UsersService {
 
     private final UsersRepo usersRepo;
+    private final BCryptConfig bCryptConfig;
 
 
 
 
     public void save(Users user) {
+        user.setPassword(bCryptConfig.encoder().encode(user.getPassword()));
         usersRepo.save(user);
     }
 
