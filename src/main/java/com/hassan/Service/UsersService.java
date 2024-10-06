@@ -5,7 +5,11 @@ import com.hassan.Model.Users;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Repo.UsersRepo;
 import com.hassan.Security.Encryption.BCryptConfig;
+import com.hassan.Security.JwtService.JwtConfig;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +20,8 @@ public class UsersService {
 
     private final UsersRepo usersRepo;
     private final BCryptConfig bCryptConfig;
+    private final AuthenticationManager authenticationManager;
+    private final JwtConfig jwtConfig;
 
 
 
@@ -67,6 +73,13 @@ public class UsersService {
 
 
 
+    public String login(Users user) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        if (authentication.isAuthenticated())
+            return jwtConfig.generateToken(user.getEmail());
+        return "Failed";
+    }
 
 
 }
