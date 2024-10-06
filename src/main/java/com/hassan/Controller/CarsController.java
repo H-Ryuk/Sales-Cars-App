@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,24 +37,25 @@ public class CarsController {
         return carsService.findAll();
     }
 
-
-    @GetMapping("images/{imageId}")
-    public ResponseEntity<byte[]> getImageByCarsImagesId(@PathVariable Long imageId){
-       CarsImages img = carsService.image(imageId);
-       HttpHeaders headers = new HttpHeaders();
-       headers.set(HttpHeaders.CONTENT_TYPE, img.getImageType());
-        return new ResponseEntity<>(img.getImageData(), headers, HttpStatus.OK);
+    @GetMapping("{mark}")
+    public List<Cars> findCarsByMark(@PathVariable String mark){
+        return carsService.findCarByMark(mark);
     }
 
 
-    @PutMapping
-    public void updateCarFields(@RequestPart Cars car, @RequestPart List<MultipartFile> images){
-        carsService.updateCarFields(car, images);
+
+    @PutMapping("{carId}")
+    public void updateCarFields(@AuthenticationPrincipal UserDetails userDetails,
+                                @PathVariable Long carId,
+                                @RequestPart Cars car,
+                                @RequestPart List<MultipartFile> images){
+        carsService.updateCarFields(userDetails, carId, car, images);
     }
 
 
-    @DeleteMapping
-    public void deleteCarById(@RequestParam Long carId){
+
+    @DeleteMapping("{carId}")
+    public void deleteCarById(@PathVariable Long carId){
         carsService.deleteCarById(carId);
     }
 

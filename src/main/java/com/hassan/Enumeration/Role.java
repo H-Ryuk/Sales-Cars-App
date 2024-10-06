@@ -1,5 +1,5 @@
 package com.hassan.Enumeration;
 
 public enum Role {
-    ADMIN, SELLER, BUYER
+    ROLE_ADMIN, ROLE_SELLER, ROLE_BUYER
 }
