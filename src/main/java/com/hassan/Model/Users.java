@@ -45,4 +45,5 @@ public class Users {
     @JoinColumn(name = "seller")
     private List<Cars> carsList = new ArrayList<>();
 
+
 }

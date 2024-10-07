@@ -18,14 +18,10 @@ public interface CarsRepo extends JpaRepository<Cars, Long> {
     List<Cars> findCarByMark(String mark);
 
 
-//    @Query(value = "select u.email, u.password, u.role from cars c " +
-//            "join users u on c.seller = u.user_id where c.car_id = :carId", nativeQuery = true)
-//    Optional<SellerOfCarsRecord> findSellerOfCar(Long carId);
 
     @Query("select new com.hassan.Record.SellerOfCarsRecord" +
             "(u.email, u.password, u.role) from Users u join u.carsList c where c.carId = :carId")
     Optional<SellerOfCarsRecord> findSellerOfCar(Long carId);
-
 
 
 
