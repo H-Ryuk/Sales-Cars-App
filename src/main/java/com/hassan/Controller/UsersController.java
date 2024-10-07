@@ -2,10 +2,12 @@ package com.hassan.Controller;
 
 
 import com.hassan.Model.Users;
+import com.hassan.Record.RegisterRecord;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Repo.UsersRepo;
 import com.hassan.Security.JwtService.JwtConfig;
 import com.hassan.Service.UsersService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,8 +26,8 @@ public class UsersController {
 
 
     @PostMapping("register")
-    public void register(@RequestBody Users user) {
-        usersService.save(user);
+    public void register(@RequestBody @Valid RegisterRecord registerRecord) {
+        usersService.save(registerRecord);
     }
 
 
@@ -41,9 +43,9 @@ public class UsersController {
     }
 
 
-    @GetMapping("name")
-    public UsersRecord findByName(@RequestParam String name) {
-        return usersService.findByName(name);
+    @GetMapping("{userName}")
+    public UsersRecord findByName(@PathVariable String userName) {
+        return usersService.findByName(userName);
     }
 
 
