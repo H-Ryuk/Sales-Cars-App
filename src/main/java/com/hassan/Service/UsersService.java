@@ -1,7 +1,9 @@
 package com.hassan.Service;
 
 
+import com.hassan.Exception.TargetNotFoundException;
 import com.hassan.Model.Users;
+import com.hassan.Record.RegisterRecord;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Repo.UsersRepo;
 import com.hassan.Security.Encryption.BCryptConfig;
@@ -26,7 +28,9 @@ public class UsersService {
 
 
 
-    public void save(Users user) {
+
+    public void save(RegisterRecord registerRecord) {
+        Users user = convertFromObjToUser(registerRecord);
         user.setPassword(bCryptConfig.encoder().encode(user.getPassword()));
         usersRepo.save(user);
     }
@@ -47,10 +51,12 @@ public class UsersService {
 
 
 
+
     public UsersRecord findByName(String name) {
         return usersRepo.findByName(name)
-                .orElseThrow(); // create a custom exception
+                .orElseThrow(() -> new TargetNotFoundException(name));
     }
+
 
 
 
@@ -79,6 +85,22 @@ public class UsersService {
         if (authentication.isAuthenticated())
             return jwtConfig.generateToken(user.getEmail());
         return "Failed";
+    }
+
+
+
+
+    private Users convertFromObjToUser(RegisterRecord registerRecord){
+        Users user = new Users();
+        user.setUserName(registerRecord.userName());
+        user.setAddress(registerRecord.address());
+        user.setPhoneNumber(registerRecord.phoneNumber());
+        user.setEmail(registerRecord.email());
+        user.setPassword(registerRecord.password());
+        user.setCin(registerRecord.cin());
+        user.setRole(registerRecord.role());
+
+        return user;
     }
 
 

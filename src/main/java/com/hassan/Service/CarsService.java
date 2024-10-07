@@ -1,7 +1,6 @@
 package com.hassan.Service;
 
 
-import com.hassan.Enumeration.Role;
 import com.hassan.Model.Cars;
 import com.hassan.Model.CarsImages;
 import com.hassan.Record.SellerOfCarsRecord;
@@ -24,9 +23,6 @@ public class CarsService {
 
 
     private final CarsRepo carsRepo;
-    private final UsersRepo usersRepo;
-    private final CarsImagesRepo carsImagesRepo;
-
 
 
 

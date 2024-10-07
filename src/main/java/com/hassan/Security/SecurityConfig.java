@@ -47,8 +47,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
 
-                    req.requestMatchers("/api/v1/users/register", "/api/v1/users/login", "/api/v1/users/check").permitAll();
-                    req.requestMatchers("/api/v1/users").hasRole("ADMIN");
+                    req.requestMatchers("/api/v1/users/register", "/api/v1/users/login").permitAll();
+                    req.requestMatchers("/api/v1/users", "/api/v1/users/**").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/api/v1/cars").hasRole("SELLER");
                     req.requestMatchers(HttpMethod.DELETE, "/api/v1/cars").hasRole("SELLER");
                     req.requestMatchers(HttpMethod.PUT, "/api/v1/cars").hasRole("SELLER");
