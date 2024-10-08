@@ -2,16 +2,15 @@ package com.hassan.Controller;
 
 
 import com.hassan.Model.Users;
-import com.hassan.Record.RegisterRecord;
+import com.hassan.Record.UserLogInRecord;
+import com.hassan.Record.UserRegisterRecord;
 import com.hassan.Record.UsersRecord;
-import com.hassan.Repo.UsersRepo;
-import com.hassan.Security.JwtService.JwtConfig;
 import com.hassan.Service.UsersService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,14 +25,18 @@ public class UsersController {
 
 
     @PostMapping("register")
-    public void register(@RequestBody @Valid RegisterRecord registerRecord) {
-        usersService.save(registerRecord);
+    public ResponseEntity<String> register(@RequestBody @Valid UserRegisterRecord registerRecord) {
+        Long userId = usersService.save(registerRecord);
+        return new
+                ResponseEntity<>("User " + registerRecord.userName() + " created successfully with ID: " + userId,
+                HttpStatus.CREATED);
     }
 
 
     @PostMapping("login")
-    public String login(@RequestBody Users user) {
-        return usersService.login(user);
+    public ResponseEntity<String> login(@RequestBody @Valid UserLogInRecord user) {
+        String token = usersService.login(user);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
 

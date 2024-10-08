@@ -2,8 +2,11 @@ package com.hassan.Advice;
 
 
 import com.hassan.Exception.TargetNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,6 +31,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TargetNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(TargetNotFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleLoginFailedException(){
+        return new ResponseEntity<>("SignIn failed", HttpStatus.NOT_FOUND);
     }
 
 
