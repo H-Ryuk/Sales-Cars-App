@@ -70,7 +70,7 @@ This project uses Spring Boot Validation with Hibernate Validator to ensure that
 > * Role-Based Access Control: Admin users can create, update, and delete car listings, while regular users can only view the listings.
 
 ## Class Diagram
-![Alt text](src/main/resources/static/images/CarsSalesClassDiagram.drawio.png)
+![Alt text](src/main/resources/static/images/CarsSalesClassDiagram.png)
 ## Tools
 > * Lombok: User to reduce boilerplate code. 
 > * Spring DevTools: for hot reloading during development. 
