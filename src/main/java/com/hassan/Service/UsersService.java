@@ -3,15 +3,19 @@ package com.hassan.Service;
 
 import com.hassan.Exception.TargetNotFoundException;
 import com.hassan.Model.Users;
-import com.hassan.Record.RegisterRecord;
+import com.hassan.Record.UserLogInRecord;
+import com.hassan.Record.UserRegisterRecord;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Repo.UsersRepo;
+import com.hassan.Security.AuthService.CustomUserDetailsService;
 import com.hassan.Security.Encryption.BCryptConfig;
 import com.hassan.Security.JwtService.JwtConfig;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,14 +31,11 @@ public class UsersService {
 
 
 
-
-
-    public void save(RegisterRecord registerRecord) {
+    public Long save(UserRegisterRecord registerRecord) {
         Users user = convertFromObjToUser(registerRecord);
         user.setPassword(bCryptConfig.encoder().encode(user.getPassword()));
-        usersRepo.save(user);
+        return usersRepo.save(user).getUserId();
     }
-
 
 
     public List<UsersRecord> findAll() {
@@ -50,14 +51,10 @@ public class UsersService {
     }
 
 
-
-
     public UsersRecord findByName(String name) {
         return usersRepo.findByName(name)
                 .orElseThrow(() -> new TargetNotFoundException(name));
     }
-
-
 
 
     public void update(Users user) {
@@ -73,24 +70,27 @@ public class UsersService {
                             usersRepo.save(users);
 
                         },
-                        () -> {}); // create a custom exception
+                        () -> {
+                        }); // create a custom exception
     }
 
 
 
 
-    public String login(Users user) {
+    public String login(UserLogInRecord user) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+            .authenticate(new UsernamePasswordAuthenticationToken(user.email(), user.password()));
+
         if (authentication.isAuthenticated())
-            return jwtConfig.generateToken(user.getEmail());
-        return "Failed";
+            return jwtConfig.generateToken(user.email());
+        else
+            return "failed";
     }
 
 
 
 
-    private Users convertFromObjToUser(RegisterRecord registerRecord){
+    private Users convertFromObjToUser(UserRegisterRecord registerRecord) {
         Users user = new Users();
         user.setUserName(registerRecord.userName());
         user.setAddress(registerRecord.address());

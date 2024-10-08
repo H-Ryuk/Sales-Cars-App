@@ -28,4 +28,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
     @Query("select u from Users u where u.email like :email")
     Optional<Users> findByEmail(String email);
 
+    @Query("select u from Users u where u.email like :email")
+    Users findEmail(String email);
+
 }

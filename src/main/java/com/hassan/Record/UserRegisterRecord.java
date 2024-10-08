@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record RegisterRecord(
+public record UserRegisterRecord(
         @NotBlank(message = "Username shouldn't be null")
         String userName,
 
