@@ -3,10 +3,8 @@ package com.hassan.Controller;
 
 import com.hassan.Model.Users;
 import com.hassan.Record.UserLogInRecord;
-import com.hassan.Record.UserRegisterRecord;
 import com.hassan.Record.UsersRecord;
 import com.hassan.Service.UsersService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,7 @@ public class UsersController {
 
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody @Valid UserRegisterRecord registerRecord) {
+    public ResponseEntity<String> register(@RequestBody @Valid UsersRecord registerRecord) {
         Long userId = usersService.save(registerRecord);
         return new
                 ResponseEntity<>("User " + registerRecord.userName() + " created successfully with ID: " + userId,
@@ -41,19 +39,21 @@ public class UsersController {
 
 
     @GetMapping
-    public List<UsersRecord> findAll() {
-        return usersService.findAll();
+    public ResponseEntity<List<UsersRecord>> findAll() {
+        List<UsersRecord> userList = usersService.findAll();
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
 
     @GetMapping("{userName}")
-    public UsersRecord findByName(@PathVariable String userName) {
-        return usersService.findByName(userName);
+    public ResponseEntity<UsersRecord> findByName(@PathVariable String userName) {
+        UsersRecord user =  usersService.findByName(userName);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
     @PutMapping
-    public void update(@RequestBody Users user) {
+    public void update(@RequestBody @Valid UsersRecord user) {
         usersService.update(user);
     }
 

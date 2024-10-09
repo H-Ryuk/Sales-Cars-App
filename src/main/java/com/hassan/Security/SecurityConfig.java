@@ -51,7 +51,7 @@ public class SecurityConfig {
                     req.requestMatchers("/api/v1/users", "/api/v1/users/**").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/api/v1/cars").hasRole("SELLER");
                     req.requestMatchers(HttpMethod.DELETE, "/api/v1/cars").hasRole("SELLER");
-                    req.requestMatchers(HttpMethod.PUT, "/api/v1/cars").hasRole("SELLER");
+                    req.requestMatchers(HttpMethod.PUT, "/api/v1/cars/{carId}").hasRole("SELLER");
                     req.requestMatchers(HttpMethod.POST, "/api/v1/invoices").hasRole("BUYER");
                     req.requestMatchers(HttpMethod.GET, "/api/v1/invoices/**").hasRole("ADMIN");
                     req.anyRequest().authenticated();

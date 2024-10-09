@@ -2,6 +2,8 @@ package com.hassan.Model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,5 +39,26 @@ public class Cars {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "car_fk")
     private List<CarsImages> carsImagesList = new ArrayList<>();
+
+
+
+    public Cars(
+            String mark,
+            String modelName,
+            String color,
+            Long mileage,
+            BigDecimal price,
+            int power,
+            String yearOfManufacture) {
+
+        this.mark = mark;
+        this.modelName = modelName;
+        this.color = color;
+        this.mileage = mileage;
+        this.price = price;
+        this.power = power;
+        this.yearOfManufacture = yearOfManufacture;
+    }
+
 
 }

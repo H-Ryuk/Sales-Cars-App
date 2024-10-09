@@ -14,14 +14,15 @@ import java.util.Optional;
 public interface UsersRepo extends JpaRepository<Users, Long> {
 
     @Query("select new com.hassan.Record.UsersRecord(" +
-            "u.userName," +
+            " u.userName," +
             " u.address, " +
-            "u.phoneNumber, " +
-            "u.email, " +
-            "u.cin, " +
-            "u.role) " +
-            "from Users u " +
-            "where u.userName like :userName")
+            " u.phoneNumber, " +
+            " u.email, " +
+            " u.password, " +
+            " u.cin, " +
+            " u.role) " +
+            " from Users u " +
+            " where u.userName like :userName")
     Optional<UsersRecord> findByName(@Param("userName") String name);
 
 

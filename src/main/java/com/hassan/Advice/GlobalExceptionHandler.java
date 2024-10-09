@@ -1,11 +1,12 @@
 package com.hassan.Advice;
 
 
+import com.hassan.Exception.CarImageListIsEmpty;
+import com.hassan.Exception.CarNotFoundException;
 import com.hassan.Exception.TargetNotFoundException;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.hassan.Exception.UserNotCompatibleWithSeller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,12 +20,12 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, String>> handleInvalidArgument(MethodArgumentNotValidException ex){
         Map<String, String> errorMap = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
             errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
-        return errorMap;
+        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -39,6 +40,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("SignIn failed", HttpStatus.NOT_FOUND);
     }
 
+
+    @ExceptionHandler(CarImageListIsEmpty.class)
+    public ResponseEntity<String> handleCarImageListIsEmpty(CarImageListIsEmpty ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(CarNotFoundException.class)
+    public ResponseEntity<String> handleCarImageListIsEmpty(CarNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(UserNotCompatibleWithSeller.class)
+    public ResponseEntity<String> handleCarImageListIsEmpty(UserNotCompatibleWithSeller ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
 
 }
