@@ -19,8 +19,7 @@ public interface UsersRepo extends JpaRepository<Users, Long> {
             " u.phoneNumber, " +
             " u.email, " +
             " u.password, " +
-            " u.cin, " +
-            " u.role) " +
+            " u.cin) " +
             " from Users u " +
             " where u.userName like :userName")
     Optional<UsersRecord> findByName(@Param("userName") String name);

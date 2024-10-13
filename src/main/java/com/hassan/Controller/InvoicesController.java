@@ -1,13 +1,12 @@
 package com.hassan.Controller;
 
 
-import com.hassan.Record.CarsUserRecord;
+import com.hassan.Record.CarsListRecord;
 import com.hassan.Record.UserInvoiceCar;
 import com.hassan.Service.InvoicesService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @AllArgsConstructor
@@ -20,13 +19,13 @@ public class InvoicesController {
 
 
     @PostMapping
-    public void createInvoiceForCar(@RequestBody CarsUserRecord carsUserRecord){
-        invoicesService.createInvoiceForCar(carsUserRecord.cars(), carsUserRecord.user());
+    public void createInvoiceForCar(@RequestBody CarsListRecord carsListRecord){
+        invoicesService.createInvoiceForCar(carsListRecord.carsList());
     }
 
 
     @GetMapping("{invoiceId}")
-    public List<UserInvoiceCar> getInvoiceById(@PathVariable Long invoiceId){
+    public UserInvoiceCar getInvoiceById(@PathVariable Long invoiceId){
         return invoicesService.getInvoiceById(invoiceId);
     }
 

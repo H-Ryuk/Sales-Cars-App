@@ -3,17 +3,19 @@ package com.hassan.Service;
 
 import com.hassan.Exception.CarImageListIsEmpty;
 import com.hassan.Exception.CarNotFoundException;
+import com.hassan.Exception.TargetNotFoundException;
 import com.hassan.Exception.UserNotCompatibleWithSeller;
 import com.hassan.Model.Cars;
 import com.hassan.Model.CarsImages;
-import com.hassan.Record.CarRecord;
+import com.hassan.Model.Users;
+import com.hassan.Record.CarRecordValidator;
+import com.hassan.Record.CarsRecord;
 import com.hassan.Record.SellerOfCarsRecord;
-import com.hassan.Repo.CarsImagesRepo;
 import com.hassan.Repo.CarsRepo;
 import com.hassan.Repo.UsersRepo;
-import jakarta.persistence.Transient;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,11 +31,15 @@ public class CarsService {
 
 
     private final CarsRepo carsRepo;
+    private final UsersRepo usersRepo;
 
 
 
-    public void addNewCar(CarRecord carRecord, List<MultipartFile> images) {
+    public void addNewCar(CarRecordValidator carRecord, List<MultipartFile> images) {
         List<CarsImages> carsImagesList = new ArrayList<>();
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users user = usersRepo.findByEmail(userEmail)
+                .orElseThrow(() -> new TargetNotFoundException(userEmail));
 
         try {
             for (MultipartFile file : images) {
@@ -48,6 +54,7 @@ public class CarsService {
         } catch (IOException e) { throw new RuntimeException(e); }
 
         Cars car = convertCarRecordToCars(carRecord);
+        car.setUser(user);
 
         car.setCarsImagesList(carsImagesList);
         if(!car.getCarsImagesList().isEmpty()){
@@ -58,7 +65,8 @@ public class CarsService {
     }
 
 
-    private Cars convertCarRecordToCars(CarRecord carRecord){
+
+    private Cars convertCarRecordToCars(CarRecordValidator carRecord){
         return new Cars(
                 carRecord.mark(),
                 carRecord.modelName(),
@@ -73,14 +81,14 @@ public class CarsService {
 
 
 
-    public List<Cars> findAll() {
-        return carsRepo.findAll();
+    public List<CarsRecord> findAll() {
+        return carsRepo.findAllCars();
     }
 
 
 
 
-    public void updateCarFields(UserDetails userDetails, Long carId, CarRecord carRecord, List<MultipartFile> images) {
+    public void updateCarFields(UserDetails userDetails, Long carId, CarRecordValidator carRecord, List<MultipartFile> images) {
 
         if (userRightsOfUpdate(userDetails, carId)) {
             System.out.println("user part");
@@ -113,8 +121,6 @@ public class CarsService {
     }
 
 
-
-
     private CarsImages getCarsImages(MultipartFile file) {
         CarsImages carsImages = new CarsImages();
         carsImages.setImageName(file.getOriginalFilename());
@@ -124,6 +130,7 @@ public class CarsService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return carsImages;
     }
 
@@ -154,7 +161,7 @@ public class CarsService {
 
 
 
-    public List<Cars> findCarByMark(String mark) {
+    public List<CarsRecord> findCarByMark(String mark) {
         return carsRepo.findCarByMark(mark);
     }
 

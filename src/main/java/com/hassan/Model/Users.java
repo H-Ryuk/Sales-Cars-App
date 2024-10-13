@@ -41,8 +41,7 @@ public class Users {
     private List<Invoices> invoicesList = new ArrayList<>();
 
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "seller")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private List<Cars> carsList = new ArrayList<>();
 
 

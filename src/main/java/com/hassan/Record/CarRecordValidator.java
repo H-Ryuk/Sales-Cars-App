@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record CarRecord(
+public record CarRecordValidator(
         @NotBlank(message = "car's mark should not be null")
         String mark,
 

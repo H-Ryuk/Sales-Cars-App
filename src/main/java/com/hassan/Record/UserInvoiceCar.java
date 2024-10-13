@@ -2,10 +2,12 @@ package com.hassan.Record;
 
 import com.hassan.Enumeration.Payment;
 import com.hassan.Enumeration.Status;
+import com.hassan.Model.Cars;
 
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public record UserInvoiceCar(
@@ -21,11 +23,6 @@ public record UserInvoiceCar(
         String phoneNumber,
         String email,
         String cin,
-        String mark,
-        String modelName,
-        String color,
-        Long mileage,
-        BigDecimal price,
-        int power,
-        String yearOfManufacture ) {
+        List<CarsRecord> carsList
+) {
 }

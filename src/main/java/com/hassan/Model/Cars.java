@@ -41,6 +41,11 @@ public class Cars {
     private List<CarsImages> carsImagesList = new ArrayList<>();
 
 
+    @ManyToOne
+    @JoinColumn(name = "seller")
+    private Users user;
+
+
 
     public Cars(
             String mark,
@@ -60,5 +65,11 @@ public class Cars {
         this.yearOfManufacture = yearOfManufacture;
     }
 
+
+
+    public Cars(Long carId, BigDecimal price) {
+        this.carId = carId;
+        this.price = price;
+    }
 
 }

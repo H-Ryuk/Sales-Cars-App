@@ -1,6 +1,7 @@
 package com.hassan.Service;
 
 
+import com.hassan.Enumeration.Role;
 import com.hassan.Exception.TargetNotFoundException;
 import com.hassan.Model.Users;
 import com.hassan.Record.UserLogInRecord;
@@ -30,8 +31,10 @@ public class UsersService {
     public Long save(UsersRecord registerRecord) {
         Users user = convertFromObjToUser(registerRecord);
         user.setPassword(bCryptConfig.encoder().encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
         return usersRepo.save(user).getUserId();
     }
+
 
 
     public List<UsersRecord> findAll() {
@@ -42,16 +45,18 @@ public class UsersService {
                         users.getPhoneNumber(),
                         users.getEmail(),
                         users.getPassword(),
-                        users.getCin(),
-                        users.getRole()
+                        users.getCin()
                 )).toList();
     }
+
 
 
     public UsersRecord findByName(String name) {
         return usersRepo.findByName(name)
                 .orElseThrow(() -> new TargetNotFoundException(name));
     }
+
+
 
 
     public void update(UsersRecord user) {
@@ -63,13 +68,12 @@ public class UsersService {
                             users.setEmail(user.email());
                             users.setPassword(user.password());
                             users.setCin(user.cin());
-                            users.setRole(user.role());
                             usersRepo.save(users);
 
                         },
                         () -> {
                             throw new TargetNotFoundException(user.userName());
-                        }); // create a custom exception
+                        });
     }
 
 
@@ -77,12 +81,13 @@ public class UsersService {
 
     public String login(UserLogInRecord user) {
         Authentication authentication = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(user.email(), user.password()));
+                .authenticate(new UsernamePasswordAuthenticationToken(user.email(), user.password()));
 
         if (authentication.isAuthenticated())
             return jwtConfig.generateToken(user.email());
-        else
-            return "failed";
+
+
+        return "";
     }
 
 
@@ -96,7 +101,6 @@ public class UsersService {
         user.setEmail(registerRecord.email());
         user.setPassword(registerRecord.password());
         user.setCin(registerRecord.cin());
-        user.setRole(registerRecord.role());
 
         return user;
     }

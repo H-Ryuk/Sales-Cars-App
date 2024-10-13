@@ -1,10 +1,7 @@
 package com.hassan.Advice;
 
 
-import com.hassan.Exception.CarImageListIsEmpty;
-import com.hassan.Exception.CarNotFoundException;
-import com.hassan.Exception.TargetNotFoundException;
-import com.hassan.Exception.UserNotCompatibleWithSeller;
+import com.hassan.Exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,6 +52,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotCompatibleWithSeller.class)
     public ResponseEntity<String> handleCarImageListIsEmpty(UserNotCompatibleWithSeller ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(InvoiceNotFoundException.class)
+    public ResponseEntity<String> handleCarImageListIsEmpty(InvoiceNotFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 

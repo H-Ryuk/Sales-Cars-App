@@ -55,7 +55,6 @@ public class Invoices {
 
 
     public Invoices(
-            LocalDate invoiceDate,
             BigDecimal subTotal,
             BigDecimal taxAmount,
             BigDecimal discountAmount,
@@ -64,7 +63,6 @@ public class Invoices {
             Payment paymentMethod,
             Users user,
             List<Cars> carsList) {
-        this.invoiceDate = invoiceDate;
         this.subTotal = subTotal;
         this.taxAmount = taxAmount;
         this.discountAmount = discountAmount;

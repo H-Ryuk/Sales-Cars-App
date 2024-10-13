@@ -2,12 +2,11 @@ package com.hassan.Controller;
 
 
 import com.hassan.Model.Cars;
-import com.hassan.Model.CarsImages;
-import com.hassan.Record.CarRecord;
+import com.hassan.Record.CarRecordValidator;
+import com.hassan.Record.CarsRecord;
 import com.hassan.Service.CarsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +28,7 @@ public class CarsController {
 
 
     @PostMapping
-    public ResponseEntity<String> addNewCar(@RequestPart @Valid CarRecord car, @RequestPart List<MultipartFile> images){
+    public ResponseEntity<String> addNewCar(@RequestPart @Valid CarRecordValidator car, @RequestPart List<MultipartFile> images){
         carsService.addNewCar(car,images);
         return new ResponseEntity<>("New car added successfully", HttpStatus.CREATED);
     }
@@ -37,14 +36,14 @@ public class CarsController {
 
 
     @GetMapping
-    public List<Cars> findAll(){
+    public List<CarsRecord> findAll(){
         return carsService.findAll();
     }
 
 
 
     @GetMapping("{mark}")
-    public List<Cars> findCarsByMark(@PathVariable String mark){
+    public List<CarsRecord> findCarsByMark(@PathVariable String mark){
         return carsService.findCarByMark(mark);
     }
 
@@ -53,7 +52,7 @@ public class CarsController {
     @PutMapping("{carId}")
     public void updateCarFields(@AuthenticationPrincipal UserDetails userDetails,
                                 @PathVariable Long carId,
-                                @RequestPart @Valid CarRecord car,
+                                @RequestPart @Valid CarRecordValidator car,
                                 @RequestPart List<MultipartFile> images){
         carsService.updateCarFields(userDetails, carId, car, images);
     }
