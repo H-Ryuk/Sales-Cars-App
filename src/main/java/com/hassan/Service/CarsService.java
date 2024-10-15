@@ -1,10 +1,7 @@
 package com.hassan.Service;
 
 
-import com.hassan.Exception.CarImageListIsEmpty;
-import com.hassan.Exception.CarNotFoundException;
-import com.hassan.Exception.TargetNotFoundException;
-import com.hassan.Exception.UserNotCompatibleWithSeller;
+import com.hassan.Exception.*;
 import com.hassan.Model.Cars;
 import com.hassan.Model.CarsImages;
 import com.hassan.Model.Users;
@@ -15,6 +12,7 @@ import com.hassan.Repo.CarsRepo;
 import com.hassan.Repo.UsersRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -123,12 +121,12 @@ public class CarsService {
 
     private CarsImages getCarsImages(MultipartFile file) {
         CarsImages carsImages = new CarsImages();
-        carsImages.setImageName(file.getOriginalFilename());
-        carsImages.setImageType(file.getContentType());
+        carsImages.setImageName(file.getOriginalFilename()); // this is where we set the name of image
+        carsImages.setImageType(file.getContentType());      // this is where we set the type of image png,jpeg ...
         try {
-            carsImages.setImageData(file.getBytes());
+            carsImages.setImageData(file.getBytes());        // this is where we set the data of image bytes
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CarBytesImagesException();
         }
 
         return carsImages;
@@ -150,19 +148,24 @@ public class CarsService {
 
 
 
-
-    @Transactional
     public void deleteCarById(Long carId) {
-        int row = carsRepo.deleteCarById(carId);
-        if (row < 1){
-            throw new CarNotFoundException(carId);
-        }
+        carsRepo.findById(carId)
+                .ifPresentOrElse(cars -> {
+                            carsRepo.deleteById(carId);
+                        },
+                        () -> {
+                            throw new CarNotFoundException(carId);
+                        });
     }
 
 
 
     public List<CarsRecord> findCarByMark(String mark) {
-        return carsRepo.findCarByMark(mark);
+        List<CarsRecord> recordList = carsRepo.findCarByMark(mark);
+        if(recordList.isEmpty()){
+            throw new CarNotFoundException();
+        }
+        return recordList;
     }
 
 

@@ -37,9 +37,4 @@ public interface CarsRepo extends JpaRepository<Cars, Long> {
 
 
 
-    @Modifying
-    @Query(value = "delete from cars where car_id = :carId", nativeQuery = true)
-    int deleteCarById(Long carId);
-
-
 }
