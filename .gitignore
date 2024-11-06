@@ -1,4 +1,9 @@
 HELP.md
+target
+mvnw
+mvnw.cmd
+.mvn
+.gitignore
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -20,8 +25,7 @@ target/
 *.ipr
 *.yml
 .mvn/wrapper/maven-wrapper.properties
-mvnw.cmd
-mvnw
+
 
 ### NetBeans ###
 /nbproject/private/

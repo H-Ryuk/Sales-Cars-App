@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -32,9 +34,11 @@ public class UsersController {
 
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody @Valid UserLogInRecord user) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody @Valid UserLogInRecord user) {
         String token = usersService.login(user);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

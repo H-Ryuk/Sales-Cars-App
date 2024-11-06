@@ -49,6 +49,7 @@ public class SecurityConfig {
 
                     req.requestMatchers("/api/v1/users/register", "/api/v1/users/login").permitAll();
                     req.requestMatchers("/api/v1/users", "/api/v1/users/**").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.GET, "/api/v1/cars");
                     req.requestMatchers(HttpMethod.POST, "/api/v1/cars");
                     req.requestMatchers(HttpMethod.DELETE, "/api/v1/cars");
                     req.requestMatchers(HttpMethod.PUT, "/api/v1/cars/{carId}");
@@ -56,7 +57,8 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.GET, "/api/v1/invoices/**").hasRole("ADMIN");
                     req.anyRequest().authenticated();
                 })
-                .httpBasic(withDefaults())
+//                .httpBasic(withDefaults())
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
